@@ -1,0 +1,2 @@
+First name;Last name;Amount;Date
+${firstName};${lastName};${amount};${date}

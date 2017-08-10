@@ -13,8 +13,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.time.LocalDate;
-import java.time.Month;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 /**
@@ -27,18 +27,24 @@ public class CsvIntegrationTest {
     public void testCsv() throws Exception {
         BandData root = new BandData("Root");
         BandData header = new BandData("Header", root);
+        SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy");
 
         BandData first = new BandData("First", root);
         first.addData("firstName", "first");
         first.addData("lastName", "last");
         first.addData("amount", 24132432);
-        first.addData("date", LocalDate.of(2017, Month.AUGUST, 10));
+        first.addData("date", ft.parse("10.08.2017"));
+        first.addData("bigdc", BigDecimal.valueOf(23897428374324L));
+        first.addData("double", 3478213324.231232);
 
         BandData second = new BandData("Second", root);
         second.addData("firstName", "second");
-        second.addData("lastName", "last 2");
-        second.addData("amount", 324324324);
-        second.addData("date", LocalDate.of(2017, Month.AUGUST, 11));
+        second.addData("lastName", "last,last");
+        second.addData("amount", 12432434);
+        second.addData("date", ft.parse("11.08.2017"));
+        second.addData("bigdc", BigDecimal.valueOf(32748237487238L));
+        second.addData("double", 94875746.3248736);
+
 
         root.addChildren(Arrays.asList(header, first, second));
 

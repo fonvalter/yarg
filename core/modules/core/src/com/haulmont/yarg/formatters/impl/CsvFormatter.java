@@ -104,6 +104,6 @@ public class CsvFormatter extends AbstractFormatter {
             throw new ReportFormattingException("Error while reading template data");
         }
 
-        header = headerData.toString().split(String.valueOf(separator));
+        header = headerData.toString().replaceAll(String.valueOf(CSVWriter.DEFAULT_QUOTE_CHARACTER), "").split(String.valueOf(separator));
     }
 }

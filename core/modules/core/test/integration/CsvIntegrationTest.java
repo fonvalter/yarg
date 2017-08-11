@@ -27,6 +27,41 @@ public class CsvIntegrationTest {
 
     @Test
     public void testCsv() throws Exception {
+        BandData root = createRootCsvTree();
+
+        FileOutputStream outputStream = new FileOutputStream("./result/integration/result.csv");
+        ReportFormatter formatter = new DefaultFormatterFactory().createFormatter(new FormatterFactoryInput("csv", root,
+                new ReportTemplateImpl("", "test.csv", "./modules/core/test/integration/test.csv", ReportOutputType.csv), outputStream));
+        formatter.renderDocument();
+
+        IOUtils.closeQuietly(outputStream);
+
+        File sample = new File("./modules/core/test/integration/ethalon.csv");
+        File result = new File("./result/integration/result.csv");
+        boolean isTwoEqual = FileUtils.contentEquals(sample, result);
+
+        Assert.assertTrue("Files are not equal", isTwoEqual);
+    }
+
+    @Test
+    public void testCsvQuote() throws Exception {
+        BandData root = createRootCsvTree();
+
+        FileOutputStream outputStream = new FileOutputStream("./result/integration/result-quote.csv");
+        ReportFormatter formatter = new DefaultFormatterFactory().createFormatter(new FormatterFactoryInput("csv", root,
+                new ReportTemplateImpl("", "test-quote.csv", "./modules/core/test/integration/test-quote.csv", ReportOutputType.csv), outputStream));
+        formatter.renderDocument();
+
+        IOUtils.closeQuietly(outputStream);
+
+        File sample = new File("./modules/core/test/integration/ethalon-quote.csv");
+        File result = new File("./result/integration/result-quote.csv");
+        boolean isTwoEqual = FileUtils.contentEquals(sample, result);
+
+        Assert.assertTrue("Files are not equal", isTwoEqual);
+    }
+
+    protected BandData createRootCsvTree() throws Exception{
         BandData root = new BandData("Root");
         BandData header = new BandData("Header", root);
         SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy");
@@ -56,18 +91,6 @@ public class CsvIntegrationTest {
 
 
         root.addChildren(Arrays.asList(header, first, second));
-
-        FileOutputStream outputStream = new FileOutputStream("./result/integration/result.csv");
-        ReportFormatter formatter = new DefaultFormatterFactory().createFormatter(new FormatterFactoryInput("csv", root,
-                new ReportTemplateImpl("", "test.csv", "./modules/core/test/integration/test.csv", ReportOutputType.csv), outputStream));
-        formatter.renderDocument();
-
-        IOUtils.closeQuietly(outputStream);
-
-        File sample = new File("./modules/core/test/integration/ethalon.csv");
-        File result = new File("./result/integration/result.csv");
-        boolean isTwoEqual = FileUtils.contentEquals(sample, result);
-
-        Assert.assertTrue("Files are not equal", isTwoEqual);
+        return root;
     }
 }

@@ -4,7 +4,9 @@ import com.haulmont.yarg.formatters.ReportFormatter;
 import com.haulmont.yarg.formatters.factory.DefaultFormatterFactory;
 import com.haulmont.yarg.formatters.factory.FormatterFactoryInput;
 import com.haulmont.yarg.structure.BandData;
+import com.haulmont.yarg.structure.ReportFieldFormat;
 import com.haulmont.yarg.structure.ReportOutputType;
+import com.haulmont.yarg.structure.impl.ReportFieldFormatImpl;
 import com.haulmont.yarg.structure.impl.ReportTemplateImpl;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -28,6 +30,13 @@ public class CsvIntegrationTest {
         BandData root = new BandData("Root");
         BandData header = new BandData("Header", root);
         SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy");
+
+        String amountFormat = "###,###.###";
+        String dateFormat = "dd.MM.yyyy HH:mm:ss";
+        root.addReportFieldFormats(Arrays.asList(
+                new ReportFieldFormatImpl("date", dateFormat),
+                new ReportFieldFormatImpl("double", amountFormat),
+                new ReportFieldFormatImpl("amount", amountFormat)));
 
         BandData first = new BandData("First", root);
         first.addData("firstName", "first");
